@@ -18,20 +18,20 @@ if isempty(date)
     simNo=1; % sim number of the file you want to load
 end
 
+
+
 % on your computer replace this part of the file path (fp_CurrSimOUT) from below
 % with the path to the github repo on your computer
-parms.fnp = input("\nEnter the path to the folder containing this script on your computer in single quotes:\n");
+parms.fnp = input("Enter the path to the folder containing this script on your computer:\n");
 if isempty(parms.fnp)
     parms.fnp = '/Users/surabhisimha/GitHub/Emory/Simha-Ting2023JExptPhysiol/';
 end
 
 %% keep these constant to plot the ramp figures as seen in the manusript
 % ie Figure 4c
-protocolPick = '/sine'; % this is parms.protcolPick in the "main" files
-ampList = [0.1 2];
 
-fp_CurrSimOUT = strcat(parms.fnp,'/sim_output/');
-fp_CurrSimIN = strcat(parms.fnp,'/sim_input');
+fp_CurrSimOUT = strcat(parms.fnp,'sim_output/');
+fp_CurrSimIN = strcat(parms.fnp,'sim_input');
 
 
 MTUtoFibre=0.8;
@@ -54,48 +54,34 @@ for i=1:numel(ampList)
     ax(1)=subplot(611);hold on;grid on;
       plot(t,length.bag*lenScaleFactor,'-','Color',cm(1,:),'LineWidth',3); 
       plot(cumsum(prot(:,2)),(1300+cumsum(prot(:,1)))*lenScaleFactor,'--','Color','k','LineWidth',2);
-      ylabel('length [L0]','fontsize',16); title('sine','fontsize',16)
+      ylabel('length [L0]'); title('sine')
       xlim([1.95 t(end)]);
-      set(gcf,'color','w')
-      box off;
     ax(2)=subplot(612);hold on; grid on;
       plot(t,force.bag,'-','Color',cm(1,:),'LineWidth',2);
-      ylabel('stress [Nm^{-2}]','fontsize',16);
+      ylabel('stress [Nm^{-2}]');
       xlim([1.95 t(end)]);
-      set(gcf,'color','w')
-      box off;
       
     ax(3)=subplot(611);hold on; grid on;
       plot(t,length.chain*lenScaleFactor,'-','Color',cm(2,:),'LineWidth',1);
       xlim([1.95 t(end)]);
-      set(gcf,'color','w')
-      box off;
     ax(4)=subplot(613);hold on; grid on;
       plot(t,force.chain,'-','Color',cm(2,:),'LineWidth',2);
-      ylabel('stress [Nm^{-2}]','fontsize',16);
+      ylabel('stress [Nm^{-2}]');
       xlim([1.95 t(end)]);
-      set(gcf,'color','w')
-      box off;
             
     rd=rd-rd(1000);rd(rd<0)=0; rs=rs-rs(1000);rs(rs<0)=0; r=r-r(1000);r(r<0)=0;
     ax(5)=subplot(614);hold on;grid on;
       plot(t,rd,'-','Color',cm(1,:),'LineWidth',2);
-      ylabel({'bag', 'contribution'},'fontsize',16);
-      xlim([1.95 t(end)]);  
-      set(gcf,'color','w')
-      box off;
+      ylabel({'bag', 'contribution'});
+      xlim([1.95 t(end)]);      
     ax(6)=subplot(615);hold on; grid on;
       plot(t,rs,'-','Color',cm(2,:),'LineWidth',2);
-      ylabel({'chain', 'contribution'},'fontsize',16);
+      ylabel({'chain', 'contribution'});
       xlim([1.95 t(end)]);
-      set(gcf,'color','w')
-      box off;
     ax(7)=subplot(616);hold on;grid on;
       plot(t,r,'-','Color',cm(3,:),'LineWidth',2);
-      ylabel({'total','receptor', 'potential'},'fontsize',16); xlabel('time (s)','fontsize',16);
+      ylabel({'total','receptor', 'potential'}); xlabel('time (s)');
       xlim([1.95 t(end)]);
-      set(gcf,'color','w')
-      box off;
     linkaxes(ax,'x')
 pause
 end

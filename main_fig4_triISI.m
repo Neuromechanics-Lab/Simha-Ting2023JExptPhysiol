@@ -5,13 +5,26 @@ close all
 parms=[];
 
 %% edit to change file name where results are stored
-parms.date = '20230702'; %Enter today's date in YYYYMMDD format for saving file name
-parms.simNo=[3]; % for file name, to not overwrite files
+
+parms.date = input("Enter today's date in 'YYYYMMDD' format to create corresponding folder for saving data:\n");
+parms.simNo = input("\nA simualtion number so that the files from this run do not overwrite previous runs:\n");
+if isempty(parms.date)
+    parms.date = '20230702'; % should be today's date in YYYYMMDD format for saving file name
+    parms.simNo=[3]; % just a sim number so as to not overwrite files
+end
 
 % on your computer replace this part of the file path (fp_CurrSimOUT) from below
 % with the path to the github repo on your computer
-parms.fnp = '/Users/surabhisimha/Desktop/JExptPhysiol2023_SpindelModelCode/';
-parms.fp_MATMyoSim = '/Users/surabhisimha/GitHub/Emory/MATMyoSim/code/';
+parms.fnp = input("\nEnter the path to the folder containing this script on your computer in single quotes:\n");
+parms.fp_MATMyoSim = input("\nEnter the path to the folder containting the MAT MyoSim repository on your computer in single quotes:\n");
+parms.fp_MATMyoSim = strcat(parms.fp_MATMyoSim,'/MATMyoSim/code/');
+if isempty(parms.fnp)
+    parms.fnp = '/Users/surabhisimha/GitHub/Emory/Simha-Ting2023JExptPhysiol/';
+end
+if isempty(parms.fp_MATMyoSim)
+    parms.fp_MATMyoSim = '/Users/surabhisimha/GitHub/Emory/MATMyoSim/code/';
+end
+
 
 %% keep constant to simulate the results from figure 2a
 
@@ -34,7 +47,7 @@ parms.pCa = 6.4; % ~10% activation for the chain fibre; kept constant for all si
 parms.vel = 15*MTUtoFibre; % in percentage L0/s; stretch velocity
 
 % run simulation
-fp_CurrSimOUT = strcat(parms.fnp,'sim_output/');
+fp_CurrSimOUT = strcat(parms.fnp,'/sim_output/');
 results_base_file = sprintf('%s%s/%s',fp_CurrSimOUT,parms.date,parms.protocolPick); %need to change / to \ for windows OS
 cm = lines(13);
 for i=1:numel(ISI_list)

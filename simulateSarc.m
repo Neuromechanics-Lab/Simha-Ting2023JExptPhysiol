@@ -2,17 +2,17 @@ function [results_file] = simulateSarc(parms)
 
 % adding some file paths
 fp_CurrCode = parms.fnp;
-fp_CurrSimIN = strcat(parms.fnp,'sim_input');
-fp_CurrSimOUT = strcat(parms.fnp,'sim_output/');
+fp_CurrSimIN = strcat(parms.fnp,'/sim_input');
+fp_CurrSimOUT = strcat(parms.fnp,'/sim_output/');
 addpath(genpath(parms.fp_MATMyoSim))
 
 options_file = sprintf('%s/options.json',fp_CurrSimIN);
 
-% [SUCCESS,MESSAGE]  = mkdir(fp_CurrSimOUT,parms.date)
+[SUCCESS,MESSAGE]  = mkdir(fp_CurrSimOUT,parms.date)
 results_base_file = sprintf('%s%s/%s',fp_CurrSimOUT,parms.date,parms.protocolPick);
 
 protocol_folder = sprintf('%s/Protocols/%s',fp_CurrSimIN);
-% [SUCCESS,MESSAGE]  = mkdir(protocol_folder,parms.date)
+[SUCCESS,MESSAGE]  = mkdir(protocol_folder,parms.date)
 base_protocol_file =  sprintf('%s%s/%s',protocol_folder,parms.date,parms.protocolPick);
 
 model_file = sprintf('%s/Models/%s%s.json',fp_CurrSimIN,parms.modelPick,parms.fibreType);

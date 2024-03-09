@@ -18,10 +18,10 @@ if isempty(date)
     simNo=4; % sim number of the file you want to load
 end
 
-ISIsims = input("Select:\n 1: to plot effect of conditioning amplitude data from fig 4\n" + ...
-    "2: to plot effect of inter-stretch intervals from fig 4\n" + ...
-    "3: to plot effect of no interfilament cooperativity from fig 2\n" + ...
-    "4: to plot the effect of interfilament cooperativity from fig 2\n ");
+ISIsims = input("Select\n 0: to plot effect of conditioning amplitude data from fig 4\n" + ...
+    "1: to plot effect of inter-stretch intervals from fig 4\n" + ...
+    "2: to plot effect of no interfilament cooperativity\n" + ...
+    "3: to plot the effect of interfilament cooperativity from fig 2 ");
 if isempty(ISIsims)
     ISIsims=0; % set this to 1 if running inter-stretch interval sims; sest to 0 is running conditioning amplitude sims
 end
@@ -37,28 +37,25 @@ end
 % ie Figure 2b, 4a, 4b
 
 protocolPick = '/customTri'; % this is parms.protcolPick in the "main" files
-if ISIsims==1
+if ISIsims==0
     condAmpList = [0 0.25 0.5 0.75 1 1.25 1.5 1.75 2 3 7];
     ISIlist = 0;
-elseif ISIsims==2
-    condAmpList = 7*0.8;
-    ISIlist = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.5, 3, 5, 8, 10];
 else
-    condAmpList = 7;
-    ISIlist = 0;
+    condAmpList = 0.25;
+    ISIlist = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.5, 3, 5, 8, 10];
 end
 
-fp_CurrSimOUT = strcat(parms.fnp,'/sim_output/');
-fp_CurrSimIN = strcat(parms.fnp,'/sim_input');
+fp_CurrSimOUT = strcat(parms.fnp,'sim_output/');
+fp_CurrSimIN = strcat(parms.fnp,'sim_input');
 
 MTUtoFibre=0.8;
 vel =  15*10*MTUtoFibre;
 triAmp = 7*MTUtoFibre;
-if ISIsims==2
+if ISIsims==1
     iterList = ISIlist;
     riseTime = ((triAmp/100)*1300)/((vel/1000)*1300);
     maxTestRampStartTime = 2+(2*riseTime)+max(ISIlist);
-elseif ISIsims==1
+else
     iterList = condAmpList;
     condAmpList = condAmpList*MTUtoFibre;
     condAmpRiseTime = ((condAmpList/100)*1300)/((vel/1000)*1300);
@@ -69,7 +66,7 @@ end
 figure(1);
 for i=1:numel(iterList)
 
-    if ISIsims==2
+    if ISIsims==1
         fname_mat = strcat(fp_CurrSimOUT,num2str(date),protocolPick,'Sim',num2str(simNo),'pCa64ISI'...
             ,num2str(ISIlist(i)*10),'condAmp',num2str(condAmpList*10),'Amp',...
             num2str(triAmp*10),'Vel',num2str(vel),'.mat');
@@ -86,7 +83,7 @@ for i=1:numel(iterList)
             num2str(triAmp*10),'Vel',num2str(vel),'.txt');
         prot = dlmread(fname_prot,'',1,0);
 
-    elseif ISIsims==1
+    else
         fname_mat = strcat(fp_CurrSimOUT,num2str(date),protocolPick,'Sim',num2str(simNo),'pCa64ISI'...
             ,num2str(ISIlist*10),'condAmp',num2str(condAmpList(i)*10),'Amp',...
             num2str(triAmp*10),'Vel',num2str(vel),'.mat');

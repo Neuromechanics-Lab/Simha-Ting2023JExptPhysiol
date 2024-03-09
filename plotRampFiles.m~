@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 clear
-% close all
+close all
 cm=parula(5);
 
 %% Edit these
@@ -20,15 +20,17 @@ end
 
 protocolPickNum = input("Select the number corresponding to the protocol name (the value of parms.protocolPick " + ...
     "from the main_ script whose results you are trying to plot):\n" + ...
-    "1 - rampNoThinFilamentDeact\n 2 - rampNoCoop\n 3 - rampWithCoop\n");
+    "1 - ramp\n 2 - rampNoThinFilamentDeact\n 3 - rampNoCoop\n 4 - rampWithCoop\n");
 
 switch protocolPickNum
     case 1
-        protocolPick = '/rampNoThinFilamentDeact';
-    case 2
-        protocolPick = '/rampNoCoop';
-    case 3
         protocolPick = '/ramp';
+    case 2
+        protocolPick = '/rampNoThinFilamentDeact';
+    case 3
+        protocolPick = '/rampNoCoop';
+    case 4
+        protocolPick = '/rampWithCoop';
 end
 
 if isempty(protocolPick)
@@ -73,14 +75,15 @@ figure(1);hold on;
     ax(1)=subplot(611);hold on;grid on;dx(1)=ax(1);
       plot(t,length.bag/1300,'-','Color',cm(1,:),'LineWidth',3); 
       plot(cumsum(prot(:,2)),(1300+cumsum(prot(:,1)))/1300,'--','Color','k','LineWidth',2);
-      ylabel('length [nm]','fontsize',16); title(strcat(titleStr),'fontsize',16); 
+      ylabel('length [nm]','fontsize',16); title(strcat(titleStr)); 
       xlim([1.8 2.4])
+      set(gca,'fontsize',16)
       set(gcf,'color','w')
       box off;
 
     ax(2)=subplot(612);hold on; grid on;
       plot(t,force.bag,'-','Color',cm(1,:),'LineWidth',2);
-      ylabel('stress [Nm^{-2}]','fontsize',16);
+      ylabel('stress [Nm^{-2}]');
       xlim([1.8 2.4]);ylim([0 4e5])
       set(gca,'fontsize',16)
       set(gcf,'color','w')
@@ -91,31 +94,26 @@ figure(1);hold on;
       xlim([1.8 2.4])
     ax(4)=subplot(613);hold on; grid on;
       plot(t,force.chain,'-','Color',cm(2,:),'LineWidth',2);
-      ylabel('stress [Nm^{-2}]','fontsize',16);
+      ylabel('stress [Nm^{-2}]');
       xlim([1.8 2.4]);ylim([0 3e5])
+      linkaxes(ax,'x')
+      set(gca,'fontsize',16)
       set(gcf,'color','w')
       box off;
-      linkaxes(ax,'x')
             
     ax(5)=subplot(614);hold on; grid on;
       plot(t,rd,'-','Color',cm(1,:),'LineWidth',2);
-      ylabel({'bag', 'contribution'},'fontsize',16);
+      ylabel({'bag', 'contribution'});
       xlim([1.8 2.4]);ylim([0 6])
-      set(gcf,'color','w')
-      box off;
     ax(6)=subplot(615);hold on; grid on;
       plot(t,rs,'-','Color',cm(2,:),'LineWidth',2);
-      ylabel({'chain', 'contribution'},'fontsize',16);
+      ylabel({'chain', 'contribution'});xlabel('time (s)');
       xlim([1.8 2.4]);ylim([0 6])   
-      set(gcf,'color','w')
-      box off;
     ax(7)=subplot(616);hold on;grid on;
       plot(t,r,'-','Color',cm(3,:),'LineWidth',2);
-      ylabel({'total','receptor', 'potential'},'fontsize',16); xlabel('time (s)','fontsize',16);
+      ylabel({'total','receptor', 'potential'}); xlabel('time (s)');
       ylim([0 6])
       xlim([1.8 2.4])
-      set(gcf,'color','w')
-      box off;
       linkaxes(ax,'x')
       
 %% some metrics
